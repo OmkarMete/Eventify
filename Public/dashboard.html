@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Eventify</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-spinner"></div>
+        <p class="loader-text" id="loaderText">Generating your event plan...</p>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/logo.png" alt="Eventify Logo" class="nav-logo-img" />
+                <span>Eventify</span>
+            </div>
+            <div class="nav-actions">
+                <span class="nav-user">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span id="navUserName">Loading...</span>
+                </span>
+                <a href="/saved-events.html" class="btn-outline">
+                    <i class="fa-solid fa-bookmark"></i> Saved Plans
+                </a>
+                <button class="btn-danger" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">
+                    Plan Your Event <span class="gradient-text">with AI</span>
+                </h1>
+                <p class="dashboard-subtitle">Fill in your event details and let AI do the rest.</p>
+            </div>
+
+            <div class="toast" id="dashboardToast"></div>
+
+            <section class="dashboard-section">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2><i class="fa-solid fa-pen-to-square icon-purple"></i> Event Details</h2>
+                        <p>Tell us about your event to get personalized recommendations.</p>
+                    </div>
+
+                    <div class="event-form" id="eventForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventType"><i class="fa-solid fa-star"></i> Event Type</label>
+                                <select id="eventType">
+                                    <option value="">Select event type</option>
+                                    <option value="Wedding">Wedding</option>
+                                    <option value="Birthday">Birthday</option>
+                                    <option value="Corporate">Corporate</option>
+                                    <option value="Engagement">Engagement</option>
+                                    <option value="Anniversary">Anniversary</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="city"><i class="fa-solid fa-location-dot"></i> City</label>
+                                <select id="city">
+                                    <option value="">Select city</option>
+                                    <option value="Ahmedabad">Ahmedabad</option>
+                                    <option value="Surat">Surat</option>
+                                    <option value="Vadodara">Vadodara</option>
+                                    <option value="Rajkot">Rajkot</option>
+                                    <option value="Anand">Anand</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="budget"><i class="fa-solid fa-indian-rupee-sign"></i> Budget (₹)</label>
+                                <input type="number" id="budget" placeholder="e.g. 500000" min="1" />
+                            </div>
+                            <div class="form-group">
+                                <label for="guestCount"><i class="fa-solid fa-users"></i> Number of Guests</label>
+                                <input type="number" id="guestCount" placeholder="e.g. 200" min="1" />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventDate"><i class="fa-solid fa-calendar"></i> Event Date</label>
+                                <input type="date" id="eventDate" />
+                            </div>
+                            <div class="form-group">
+                                <label for="hostName"><i class="fa-solid fa-user"></i> Host Name (for invitation)</label>
+                                <input type="text" id="hostName" placeholder="e.g. Ramesh & Priya" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="specialRequirements"><i class="fa-solid fa-clipboard-list"></i> Special Requirements</label>
+                            <textarea id="specialRequirements" rows="3" placeholder="e.g. Vegetarian food only..."></textarea>
+                        </div>
+
+                        <button class="btn-primary btn-large" id="findMatchesBtn" onclick="findMatches()">
+                            <i class="fa-solid fa-magnifying-glass"></i> Find Venues & Caterers
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="venueSection" style="display:none;">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2><i class="fa-solid fa-building icon-blue"></i> Recommended Venues</h2>
+                        <p>Venues matching your city, event type, capacity, and budget.</p>
+                    </div>
+                    <div class="results-grid" id="venueResults"></div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="catererSection" style="display:none;">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2><i class="fa-solid fa-utensils icon-orange"></i> Recommended Caterers</h2>
+                        <p>Caterers matching your city and budget for your guest count.</p>
+                    </div>
+                    <div class="results-grid" id="catererResults"></div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="aiSection" style="display:none;">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2><i class="fa-solid fa-robot icon-purple"></i> AI Generation</h2>
+                        <p>Generate your event plan, risk analysis, and invitation using Gemini AI.</p>
+                    </div>
+                    <div class="ai-buttons">
+                        <button class="ai-btn ai-btn-plan" id="generatePlanBtn" onclick="generatePlan()">
+                            <div class="ai-btn-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <div class="ai-btn-text">
+                                <span class="ai-btn-title">Generate Event Plan</span>
+                                <span class="ai-btn-desc">Timeline, budget distribution, checklist & matching vendors</span>
+                            </div>
+                        </button>
+
+                        <button class="ai-btn ai-btn-risk" id="generateRiskBtn" onclick="generateRisk()">
+                            <div class="ai-btn-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div class="ai-btn-text">
+                                <span class="ai-btn-title">Risk Analysis</span>
+                                <span class="ai-btn-desc">Predict potential event risks & get actionable mitigation tips</span>
+                            </div>
+                        </button>
+
+                        <button class="ai-btn ai-btn-invite" id="generateInviteBtn" onclick="generateInvitation()">
+                            <div class="ai-btn-icon"><i class="fa-solid fa-envelope"></i></div>
+                            <div class="ai-btn-text">
+                                <span class="ai-btn-title">Generate Invitation</span>
+                                <span class="ai-btn-desc">Formal, casual WhatsApp, and optimized structured email invitation texts</span>
+                            </div>
+                        </button>
+
+                        <button class="ai-btn ai-btn-budget" id="generateBudgetBtn" onclick="generateBudgetPlan()">
+                            <div class="ai-btn-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                            <div class="ai-btn-text">
+                                <span class="ai-btn-title">Budget Optimizer</span>
+                                <span class="ai-btn-desc">Smart allocation tracking & dynamic structural cost-saving tips</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="planSection" style="display:none;">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2><i class="fa-solid fa-wand-magic-sparkles icon-purple"></i> AI Event Plan</h2>
+                    </div>
+                    <div class="ai-result" id="planResult"></div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="riskSection" style="display:none;">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2><i class="fa-solid fa-shield-halved icon-red"></i> Risk Analysis</h2>
+                    </div>
+                    <div class="ai-result" id="riskResult"></div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="inviteSection" style="display:none;">
+                <div class="section-card">
+                    <div class="section-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h2><i class="fa-solid fa-envelope icon-green"></i> AI Invitation</h2>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <select id="downloadScopeSelect" style="padding: 0.45rem 0.8rem; font-size: 0.85rem; border-radius: 8px; border: 2px solid #7c3aed; background-color: #f9f5ff; color: #7c3aed; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; outline: none; transition: all 0.2s ease;">
+                                <option value="all">All 3 Templates</option>
+                                <option value="formal">1. Formal Invitation</option>
+                                <option value="casual">2. Casual / WhatsApp</option>
+                                <option value="email">3. Email Invitation</option>
+                            </select>
+                            <button class="btn-primary" id="downloadPdfBtn" onclick="downloadInvitationPDF()" style="padding: 0.45rem 1.2rem; font-size: 0.85rem; border-radius: 8px; font-weight: 600;">
+                                <i class="fa-solid fa-file-pdf"></i> Download PDF
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ai-result" id="inviteResult"></div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="budgetSection" style="display:none;">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2><i class="fa-solid fa-sack-dollar icon-orange"></i> AI Budget Optimization</h2>
+                    </div>
+                    <div class="ai-result" id="budgetResult"></div>
+                </div>
+            </section>
+
+            <section class="dashboard-section" id="saveSection" style="display:none;">
+                <div class="save-bar">
+                    <div class="save-bar-text">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Ready to save your event plan?</span>
+                    </div>
+                    <button class="btn-primary btn-large" id="savePlanBtn" onclick="savePlan()">
+                        <i class="fa-solid fa-bookmark"></i> Save This Plan
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

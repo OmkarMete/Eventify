@@ -1,0 +1,627 @@
+/* ==============================================
+   dashboard.css
+   Purpose: Styles for dashboard.html
+   - Event form layout
+   - Venue and caterer result cards
+   - AI generation buttons
+   - AI result display
+   - Save plan bar
+   Extends: style.css (global styles)
+   ============================================== */
+
+
+/* ==============================================
+   DASHBOARD LAYOUT
+   ============================================== */
+
+.dashboard-main {
+    padding:    2.5rem 1.5rem 5rem;
+    min-height: calc(100vh - 64px);
+}
+
+.dashboard-container {
+    max-width: 1000px;
+    margin:    0 auto;
+    display:   flex;
+    flex-direction: column;
+    gap:       2rem;
+}
+
+/* Dashboard Page Header */
+.dashboard-header {
+    text-align: center;
+    padding:    1rem 0;
+}
+
+.dashboard-title {
+    font-size:     clamp(1.75rem, 4vw, 2.5rem);
+    font-weight:   800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.dashboard-subtitle {
+    color:     var(--text-secondary);
+    font-size: var(--font-size-lg);
+}
+
+
+/* ==============================================
+   SECTION CARDS
+   Wrapper for each dashboard section
+   ============================================== */
+
+.dashboard-section {
+    animation: sectionIn 0.35s ease;
+}
+
+@keyframes sectionIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0);     }
+}
+
+.section-card {
+    background-color: var(--bg-card);
+    border:           1px solid var(--border-color);
+    border-radius:    var(--radius-lg);
+    padding:          2rem;
+}
+
+.section-card-header {
+    margin-bottom: 1.75rem;
+}
+
+.section-card-header h2 {
+    font-size:     var(--font-size-xl);
+    font-weight:   700;
+    display:       flex;
+    align-items:   center;
+    gap:           0.6rem;
+    margin-bottom: 0.35rem;
+}
+
+.section-card-header h2 i {
+    font-size: 1.1rem;
+}
+
+.section-card-header p {
+    font-size: var(--font-size-sm);
+    color:     var(--text-secondary);
+    margin-left: 1.7rem;
+}
+
+
+/* ==============================================
+   EVENT FORM
+   ============================================== */
+
+.event-form {
+    display:        flex;
+    flex-direction: column;
+    gap:            1.25rem;
+}
+
+/* Two-column row */
+.form-row {
+    display:               grid;
+    grid-template-columns: 1fr 1fr;
+    gap:                   1.25rem;
+}
+
+/* Textarea specific */
+.event-form textarea {
+    resize:     vertical;
+    min-height: 80px;
+}
+
+/* Date input color fix for dark theme */
+input[type="date"] {
+    color-scheme: dark;
+}
+
+/* Submit button spacing */
+.event-form .btn-primary {
+    margin-top:      0.5rem;
+    align-self:      flex-start;
+    padding:         0.75rem 2rem;
+}
+
+
+/* ==============================================
+   RESULTS GRID
+   Venue and caterer cards
+   ============================================== */
+
+.results-grid {
+    display:               grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap:                   1rem;
+}
+
+/* Individual result card */
+.result-card {
+    background-color: var(--bg-secondary);
+    border:           1px solid var(--border-color);
+    border-radius:    var(--radius-md);
+    padding:          1.25rem;
+    cursor:           pointer;
+    transition:       var(--transition);
+    position:         relative;
+}
+
+.result-card:hover {
+    border-color:     var(--border-hover);
+    background-color: var(--bg-card-hover);
+    transform:        translateY(-2px);
+    box-shadow:       var(--shadow-sm);
+}
+
+/* Selected state */
+.result-card.selected {
+    border-color:     var(--accent-purple);
+    background-color: rgba(124, 58, 237, 0.08);
+    box-shadow:       0 0 0 1px var(--accent-purple);
+}
+
+.result-card.selected::after {
+    content:          '\f00c';
+    font-family:      'Font Awesome 6 Free';
+    font-weight:      900;
+    position:         absolute;
+    top:              0.75rem;
+    right:            0.75rem;
+    background-color: var(--accent-purple);
+    color:            #fff;
+    width:            22px;
+    height:           22px;
+    border-radius:    50%;
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+    font-size:        0.65rem;
+}
+
+/* Card Name */
+.result-card-name {
+    font-size:     var(--font-size-base);
+    font-weight:   600;
+    margin-bottom: 0.75rem;
+    padding-right: 1.5rem;
+}
+
+/* Card Details list */
+.result-card-details {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.4rem;
+}
+
+.result-card-detail {
+    display:     flex;
+    align-items: center;
+    gap:         0.5rem;
+    font-size:   var(--font-size-xs);
+    color:       var(--text-secondary);
+}
+
+.result-card-detail i {
+    width:      14px;
+    text-align: center;
+    color:      var(--accent-purple);
+    flex-shrink: 0;
+}
+
+/* Cost highlight */
+.result-card-cost {
+    margin-top:       0.75rem;
+    padding-top:      0.75rem;
+    border-top:       1px solid var(--border-color);
+    font-size:        var(--font-size-sm);
+    font-weight:      600;
+    color:            var(--accent-green);
+}
+
+/* No results message */
+.no-results {
+    grid-column: 1 / -1;
+    text-align:  center;
+    padding:     2rem;
+    color:       var(--text-muted);
+    font-size:   var(--font-size-sm);
+}
+
+.no-results i {
+    font-size:     2rem;
+    margin-bottom: 0.75rem;
+    display:       block;
+    opacity:       0.4;
+}
+
+
+/* ==============================================
+   AI RESULT DISPLAY
+   Renders the markdown-like AI response text
+   ============================================== */
+
+.ai-result {
+    background-color: var(--bg-secondary);
+    border:           1px solid var(--border-color);
+    border-radius:    var(--radius-md);
+    padding:          1.5rem;
+    line-height:      1.8;
+    font-size:        var(--font-size-sm);
+    color:            var(--text-secondary);
+    white-space:      pre-wrap;
+    word-break:       break-word;
+    max-height:       500px;
+    overflow-y:       auto;
+}
+
+/* Scrollbar styling for AI result */
+.ai-result::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ai-result::-webkit-scrollbar-track {
+    background: var(--bg-card);
+}
+
+.ai-result::-webkit-scrollbar-thumb {
+    background-color: var(--border-hover);
+    border-radius:    3px;
+}
+
+/* Headings inside AI result */
+.ai-result h2,
+.ai-result h3 {
+    color:         var(--text-primary);
+    margin:        1rem 0 0.5rem;
+    font-size:     var(--font-size-base);
+}
+
+.ai-result strong {
+    color: var(--text-primary);
+}
+
+
+/* ==============================================
+   SAVE PLAN BAR
+   Sticky action bar at the bottom
+   ============================================== */
+
+.save-bar {
+    display:          flex;
+    align-items:      center;
+    justify-content:  space-between;
+    background:       linear-gradient(135deg, rgba(124,58,237,0.1), rgba(37,99,235,0.1));
+    border:           1px solid rgba(124, 58, 237, 0.3);
+    border-radius:    var(--radius-lg);
+    padding:          1.25rem 1.75rem;
+    flex-wrap:        wrap;
+    gap:              1rem;
+}
+
+.save-bar-text {
+    display:     flex;
+    align-items: center;
+    gap:         0.6rem;
+    font-size:   var(--font-size-base);
+    font-weight: 500;
+    color:       var(--text-primary);
+}
+
+.save-bar-text i {
+    color: var(--accent-purple);
+    font-size: 1.1rem;
+}
+
+
+/* ==============================================
+   SELECTED SUMMARY BAR
+   Shows selected venue and caterer names
+   ============================================== */
+
+.selection-summary {
+    display:          flex;
+    align-items:      center;
+    gap:              1rem;
+    background-color: var(--bg-secondary);
+    border:           1px solid var(--border-color);
+    border-radius:    var(--radius-md);
+    padding:          0.75rem 1.25rem;
+    flex-wrap:        wrap;
+    margin-top:       1rem;
+    font-size:        var(--font-size-sm);
+}
+
+.selection-item {
+    display:     flex;
+    align-items: center;
+    gap:         0.4rem;
+    color:       var(--text-secondary);
+}
+
+.selection-item i {
+    color: var(--accent-purple);
+}
+
+.selection-item span {
+    color:       var(--text-primary);
+    font-weight: 500;
+}
+
+
+/* ==============================================
+   GLOBAL LAYOUT RESPONSIVE
+   ============================================== */
+
+@media (max-width: 768px) {
+
+    .dashboard-main {
+        padding: 1.5rem 1rem 4rem;
+    }
+
+    .section-card {
+        padding: 1.25rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .save-bar {
+        flex-direction: column;
+        text-align:     center;
+    }
+
+    .save-bar .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .dashboard-title {
+        font-size: 1.6rem;
+    }
+
+    .event-form .btn-primary {
+        width:          100%;
+        align-self:     stretch;
+        justify-content: center;
+    }
+}
+
+
+/* ==============================================
+   FIXED TOAST
+   ============================================== */
+
+#dashboardToast {
+    position:        fixed;
+    top:             80px;
+    left:            50%;
+    transform:       translateX(-50%);
+    z-index:         9999;
+    min-width:       320px;
+    max-width:       500px;
+    text-align:      center;
+    justify-content: center;
+    box-shadow:      0 4px 20px rgba(0,0,0,0.4);
+}
+
+
+/* ==============================================
+   AI RESULT MARKDOWN STYLES
+   ============================================== */
+
+.ai-result h3 {
+    font-size:     1.05rem;
+    font-weight:   700;
+    color:         var(--text-primary);
+    margin:        1.25rem 0 0.5rem;
+}
+
+.ai-result h4 {
+    font-size:     0.95rem;
+    font-weight:   600;
+    color:         var(--accent-purple);
+    margin:        1rem 0 0.4rem;
+}
+
+.ai-result strong {
+    color:       var(--text-primary);
+    font-weight: 600;
+}
+
+.ai-result em {
+    color:      var(--accent-purple);
+    font-style: italic;
+}
+
+.ai-result ul {
+    padding-left: 1.25rem;
+    margin:       0.5rem 0;
+}
+
+.ai-result li {
+    color:         var(--text-secondary);
+    margin-bottom: 0.3rem;
+    font-size:     var(--font-size-sm);
+}
+
+
+/* ==============================================
+   AI GENERATION BUTTONS
+   Premium 2 x 2 Grid Layout (Unclipped Fix)
+   ============================================== */
+
+.ai-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Main Button structure without overflow clamping */
+.ai-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    width: 100%;
+    padding: 1rem 1.1rem; 
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-main);
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease,
+        background .25s ease;
+}
+
+/* Interactive States */
+.ai-btn:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+
+.ai-btn:active {
+    transform: translateY(-2px);
+}
+
+.ai-btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Button Variants */
+.ai-btn-plan {
+    border-color: rgba(124,58,237,.35);
+    background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(124,58,237,.03));
+}
+.ai-btn-plan:hover {
+    border-color: rgba(124,58,237,.7);
+    box-shadow: 0 0 35px rgba(124,58,237,.18);
+}
+
+.ai-btn-risk {
+    border-color: rgba(239,68,68,.35);
+    background: linear-gradient(135deg, rgba(239,68,68,.12), rgba(239,68,68,.03));
+}
+.ai-btn-risk:hover {
+    border-color: rgba(239,68,68,.7);
+    box-shadow: 0 0 35px rgba(239,68,68,.18);
+}
+
+.ai-btn-invite {
+    border-color: rgba(16,185,129,.35);
+    background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(16,185,129,.03));
+}
+.ai-btn-invite:hover {
+    border-color: rgba(16,185,129,.7);
+    box-shadow: 0 0 35px rgba(16,185,129,.18);
+}
+
+.ai-btn-budget {
+    border-color: rgba(245,158,11,.35);
+    background: linear-gradient(135deg, rgba(245,158,11,.12), rgba(245,158,11,.03));
+}
+.ai-btn-budget:hover {
+    border-color: rgba(245,158,11,.7);
+    box-shadow: 0 0 35px rgba(245,158,11,.18);
+}
+
+/* Icon Box Structure */
+.ai-btn-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: .25s ease;
+}
+
+.ai-btn:hover .ai-btn-icon {
+    transform: scale(1.08);
+}
+
+.ai-btn-plan .ai-btn-icon   { background: rgba(124,58,237,.18); color: var(--accent-purple); }
+.ai-btn-risk .ai-btn-icon   { background: rgba(239,68,68,.18);  color: #ff4d4d; }
+.ai-btn-invite .ai-btn-icon { background: rgba(16,185,129,.18); color: #10b981; }
+.ai-btn-budget .ai-btn-icon { background: rgba(245,158,11,.18); color: #f59e0b; }
+
+/* Text Content Container */
+.ai-btn-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-btn-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: .3rem;
+    line-height: 1.25;
+}
+
+.ai-btn-desc {
+    font-size: .8rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    white-space: normal;
+}
+
+/* Responsive Grid Adapters */
+@media (max-width: 900px) {
+    .ai-btn-title { font-size: 0.95rem; }
+    .ai-btn-desc { font-size: .78rem; }
+}
+
+@media (max-width: 600px) {
+    .ai-buttons {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    .ai-btn {
+        padding: 0.9rem 1rem;
+    }
+    .ai-btn-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        font-size: 1rem;
+    }
+}
+
+
+/* ==============================================
+   COLOR SWATCH
+   Small dot shown next to any #HEXCODE in an
+   AI result — used by the Decoration Theme
+   section inside the AI Event Plan.
+   ============================================== */
+
+.ai-result .color-dot {
+    display:          inline-block;
+    width:             12px;
+    height:            12px;
+    border-radius:     50%;
+    margin-right:      4px;
+    vertical-align:    middle;
+    border:            1px solid rgba(255,255,255,0.25);
+}

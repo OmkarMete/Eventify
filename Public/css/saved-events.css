@@ -1,0 +1,539 @@
+/* ==============================================
+   saved-events.css
+   Purpose: Styles for saved-events.html
+   - Page layout
+   - Saved event cards
+   - Detail modal
+   - Loading and empty states
+   Extends: style.css (global styles)
+   ============================================== */
+
+
+/* ==============================================
+   PAGE LAYOUT
+   ============================================== */
+
+.saved-main {
+    padding:    2.5rem 1.5rem 5rem;
+    min-height: calc(100vh - 64px);
+}
+
+.saved-container {
+    max-width: 1000px;
+    margin:    0 auto;
+    display:   flex;
+    flex-direction: column;
+    gap:       2rem;
+}
+
+
+/* ==============================================
+   PAGE HEADER
+   ============================================== */
+
+.saved-header {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    flex-wrap:       wrap;
+    gap:             1rem;
+}
+
+.saved-header-left {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.25rem;
+}
+
+.saved-title {
+    font-size:   clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    display:     flex;
+    align-items: center;
+    gap:         0.6rem;
+}
+
+.saved-title i {
+    font-size: 1.5rem;
+}
+
+.saved-subtitle {
+    color:     var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-left: 2.2rem;
+}
+
+
+/* ==============================================
+   LOADING STATE
+   Shown while fetching saved events
+   ============================================== */
+
+.saved-loading {
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
+    justify-content: center;
+    gap:             1rem;
+    padding:         4rem 1rem;
+    color:           var(--text-muted);
+    font-size:       var(--font-size-sm);
+}
+
+.saved-loading .loader-spinner {
+    width:            36px;
+    height:           36px;
+    border:           3px solid rgba(124,58,237,0.2);
+    border-top-color: var(--accent-purple);
+    border-radius:    50%;
+    animation:        spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+/* ==============================================
+   EMPTY STATE
+   Shown when user has no saved plans
+   ============================================== */
+
+.saved-empty {
+    text-align: center;
+    padding:    5rem 2rem;
+    color:      var(--text-muted);
+}
+
+.saved-empty i {
+    font-size:     3.5rem;
+    margin-bottom: 1.25rem;
+    display:       block;
+    opacity:       0.3;
+}
+
+.saved-empty h3 {
+    font-size:     var(--font-size-xl);
+    font-weight:   600;
+    color:         var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.saved-empty p {
+    font-size:     var(--font-size-sm);
+    margin-bottom: 1.5rem;
+}
+
+
+/* ==============================================
+   SAVED EVENTS COUNT
+   Shows "X saved plans" above the list
+   ============================================== */
+
+.saved-count {
+    font-size:   var(--font-size-sm);
+    color:       var(--text-muted);
+    padding-bottom: 0.5rem;
+    border-bottom:  1px solid var(--border-color);
+}
+
+.saved-count span {
+    color:       var(--accent-purple);
+    font-weight: 600;
+}
+
+
+/* ==============================================
+   SAVED EVENTS GRID
+   ============================================== */
+
+.saved-grid {
+    display:               grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap:                   1.25rem;
+}
+
+
+/* ==============================================
+   SAVED EVENT CARD
+   ============================================== */
+
+.saved-card {
+    background-color: var(--bg-card);
+    border:           1px solid var(--border-color);
+    border-radius:    var(--radius-lg);
+    padding:          1.5rem;
+    transition:       var(--transition);
+    display:          flex;
+    flex-direction:   column;
+    gap:              1rem;
+    animation:        cardIn 0.3s ease;
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0);   }
+}
+
+.saved-card:hover {
+    border-color:     var(--border-hover);
+    background-color: var(--bg-card-hover);
+    transform:        translateY(-2px);
+    box-shadow:       var(--shadow-md);
+}
+
+
+/* Card Top Row: Event type badge + date */
+.saved-card-top {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    gap:             0.5rem;
+}
+
+.event-type-badge {
+    display:          inline-flex;
+    align-items:      center;
+    gap:              0.35rem;
+    padding:          0.3rem 0.85rem;
+    border-radius:    999px;
+    font-size:        var(--font-size-xs);
+    font-weight:      600;
+    text-transform:   uppercase;
+    letter-spacing:   0.05em;
+}
+
+/* Badge colors per event type */
+.badge-wedding    { background: rgba(239,68,68,0.12);   color: #f87171; border: 1px solid rgba(239,68,68,0.25);   }
+.badge-birthday   { background: rgba(245,158,11,0.12);  color: #fbbf24; border: 1px solid rgba(245,158,11,0.25);  }
+.badge-corporate  { background: rgba(59,130,246,0.12);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.25);  }
+.badge-engagement { background: rgba(16,185,129,0.12);  color: #34d399; border: 1px solid rgba(16,185,129,0.25);  }
+.badge-anniversary{ background: rgba(124,58,237,0.12);  color: #a78bfa; border: 1px solid rgba(124,58,237,0.25);  }
+
+.saved-card-date {
+    font-size: var(--font-size-xs);
+    color:     var(--text-muted);
+    display:   flex;
+    align-items: center;
+    gap:       0.3rem;
+}
+
+
+/* Card Info Grid */
+.saved-card-info {
+    display:               grid;
+    grid-template-columns: 1fr 1fr;
+    gap:                   0.5rem 1rem;
+}
+
+.saved-card-info-item {
+    display:     flex;
+    align-items: flex-start;
+    gap:         0.4rem;
+    font-size:   var(--font-size-xs);
+    color:       var(--text-secondary);
+}
+
+.saved-card-info-item i {
+    color:      var(--accent-purple);
+    margin-top: 2px;
+    flex-shrink: 0;
+    width:      12px;
+}
+
+.saved-card-info-item span {
+    color:       var(--text-primary);
+    font-weight: 500;
+}
+
+
+/* AI Content Indicators */
+.saved-card-ai-tags {
+    display:   flex;
+    flex-wrap: wrap;
+    gap:       0.4rem;
+}
+
+.ai-tag {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           0.3rem;
+    padding:       0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size:     10px;
+    font-weight:   500;
+}
+
+.ai-tag-plan   { background: rgba(124,58,237,0.12); color: var(--accent-purple); }
+.ai-tag-risk   { background: rgba(239,68,68,0.12);  color: var(--accent-red);    }
+.ai-tag-invite { background: rgba(16,185,129,0.12); color: var(--accent-green);  }
+.ai-tag-budget { background: rgba(245,158,11,0.12); color: #f59e0b;              }
+
+
+/* Card Actions */
+.saved-card-actions {
+    display:    flex;
+    gap:        0.6rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-view {
+    flex:            1;
+    background:      var(--gradient-soft);
+    color:           var(--accent-purple);
+    border:          1px solid rgba(124,58,237,0.25);
+    padding:         0.5rem 1rem;
+    border-radius:   var(--radius-sm);
+    font-size:       var(--font-size-sm);
+    font-weight:     500;
+    cursor:          pointer;
+    transition:      var(--transition);
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    gap:             0.4rem;
+    font-family:     var(--font-main);
+}
+
+.btn-view:hover {
+    background:  rgba(124,58,237,0.2);
+    border-color: rgba(124,58,237,0.5);
+}
+
+/* Prevent Edit/Delete from overflowing the card — match btn-view's flex sizing */
+.saved-card-actions .btn-view,
+.saved-card-actions .btn-edit,
+.saved-card-actions .btn-danger {
+    flex:          1;
+    min-width:     0;
+    white-space:   nowrap;
+    overflow:      hidden;
+    text-overflow: ellipsis;
+    display:       flex;
+    align-items:   center;
+    justify-content: center;
+    gap:           0.4rem;
+    font-size:     var(--font-size-sm);
+}
+
+
+/* ==============================================
+   DETAIL MODAL
+   Full plan view when clicking a saved card
+   ============================================== */
+
+.modal-large {
+    max-width:  780px;
+    max-height: 88vh;
+    overflow:   hidden;
+    display:    flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    overflow-y: auto;
+    flex:       1;
+    padding-top: 0.5rem;
+}
+
+/* Scrollbar for modal body */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-body::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: var(--border-hover);
+    border-radius:    3px;
+}
+
+
+/* Detail modal event summary */
+.detail-summary {
+    display:               grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap:                   0.75rem;
+    padding:               1rem;
+    background-color:      var(--bg-secondary);
+    border:                1px solid var(--border-color);
+    border-radius:         var(--radius-md);
+    margin-bottom:         1.5rem;
+}
+
+.detail-summary-item {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.2rem;
+}
+
+.detail-summary-label {
+    font-size: var(--font-size-xs);
+    color:     var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.detail-summary-value {
+    font-size:   var(--font-size-sm);
+    font-weight: 600;
+    color:       var(--text-primary);
+}
+
+
+/* Detail modal AI sections */
+.detail-ai-section {
+    margin-bottom: 1.5rem;
+}
+
+.detail-ai-title {
+    font-size:     var(--font-size-base);
+    font-weight:   700;
+    display:       flex;
+    align-items:   center;
+    gap:           0.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-ai-content {
+    background-color: var(--bg-secondary);
+    border:           1px solid var(--border-color);
+    border-radius:    var(--radius-md);
+    padding:          1.25rem;
+    font-size:        var(--font-size-sm);
+    color:            var(--text-secondary);
+    white-space:      pre-wrap;
+    word-break:       break-word;
+    line-height:      1.8;
+    max-height:       300px;
+    overflow-y:       auto;
+}
+
+/* Detail modal delete button */
+.detail-delete-bar {
+    display:         flex;
+    justify-content: flex-end;
+    padding-top:     1rem;
+    margin-top:      0.5rem;
+    border-top:      1px solid var(--border-color);
+}
+
+
+/* ==============================================
+   RESPONSIVE
+   ============================================== */
+
+@media (max-width: 768px) {
+
+    .saved-main {
+        padding: 1.5rem 1rem 4rem;
+    }
+
+    .saved-header {
+        flex-direction: column;
+        align-items:    flex-start;
+    }
+
+    .saved-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-large {
+        max-height: 92vh;
+    }
+
+    .detail-summary {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .saved-title {
+        font-size: 1.4rem;
+    }
+
+    .saved-card-info {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .saved-card-actions {
+        flex-wrap: wrap;
+    }
+
+    .saved-card-actions .btn-view,
+    .saved-card-actions .btn-edit,
+    .saved-card-actions .btn-danger {
+        flex-basis: 100%;
+    }
+}
+
+
+/* ==============================================
+   COUNTDOWN BADGE
+   Shows days remaining until event date
+   ============================================== */
+
+.countdown-row {
+    display: flex;
+    align-items: center;
+}
+
+.countdown-badge {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           0.4rem;
+    padding:       0.35rem 0.9rem;
+    border-radius: 999px;
+    font-size:     var(--font-size-xs);
+    font-weight:   600;
+    width:         fit-content;
+}
+
+/* Event already passed */
+.countdown-past {
+    background-color: rgba(107, 114, 128, 0.12);
+    color:            #9ca3af;
+    border:           1px solid rgba(107, 114, 128, 0.25);
+}
+
+/* Event is today */
+.countdown-today {
+    background-color: rgba(245, 158, 11, 0.15);
+    color:            #fbbf24;
+    border:           1px solid rgba(245, 158, 11, 0.4);
+    animation:        pulseBadge 1.5s ease-in-out infinite;
+}
+
+/* Within 7 days */
+.countdown-soon {
+    background-color: rgba(239, 68, 68, 0.12);
+    color:            #f87171;
+    border:           1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Within 30 days */
+.countdown-near {
+    background-color: rgba(124, 58, 237, 0.12);
+    color:            var(--accent-purple);
+    border:           1px solid rgba(124, 58, 237, 0.3);
+}
+
+/* More than 30 days */
+.countdown-far {
+    background-color: rgba(16, 185, 129, 0.12);
+    color:            var(--accent-green);
+    border:           1px solid rgba(16, 185, 129, 0.3);
+}
+
+@keyframes pulseBadge {
+    0%, 100% { opacity: 1;   transform: scale(1);    }
+    50%       { opacity: 0.7; transform: scale(1.03); }
+}

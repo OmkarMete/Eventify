@@ -1,0 +1,196 @@
+/* ==============================================
+   auth.css
+   Purpose: Styles specific to the login and
+            register modals on index.html.
+   Extends:  style.css (global styles)
+   ============================================== */
+
+
+/* ==============================================
+   AUTH MODAL ENHANCEMENTS
+   Additional styling on top of the base
+   modal styles defined in style.css
+   ============================================== */
+
+/* Gradient border glow on auth modals */
+.modal {
+    position: relative;
+}
+
+.modal::before {
+    content:       '';
+    position:      absolute;
+    inset:         -1px;
+    border-radius: calc(var(--radius-xl) + 1px);
+    background:    var(--gradient);
+    z-index:       -1;
+    opacity:       0;
+    transition:    var(--transition);
+}
+
+.modal:hover::before {
+    opacity: 0.3;
+}
+
+
+/* ==============================================
+   AUTH FORM SUBMIT BUTTON
+   Loading state when request is in progress
+   ============================================== */
+
+.auth-form .btn-full {
+    margin-top:  0.25rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+/* Button loading state */
+.auth-form .btn-full.loading {
+    opacity:        0.8;
+    cursor:         not-allowed;
+    pointer-events: none;
+}
+
+
+/* ==============================================
+   PASSWORD INPUT WRAPPER
+   Allows showing/hiding password icon
+   ============================================== */
+
+.input-wrapper {
+    position: relative;
+    width:    100%;
+}
+
+.input-wrapper input {
+    width:         100%;
+    padding-right: 2.5rem;
+}
+
+.input-wrapper .toggle-password {
+    position:         absolute;
+    right:            0.75rem;
+    top:              50%;
+    transform:        translateY(-50%);
+    background:       none;
+    border:           none;
+    color:            var(--text-muted);
+    cursor:           pointer;
+    font-size:        0.85rem;
+    padding:          0;
+    transition:       var(--transition);
+    line-height:      1;
+}
+
+.input-wrapper .toggle-password:hover {
+    color: var(--text-secondary);
+}
+
+
+/* ==============================================
+   FORM VALIDATION STATES
+   Visual feedback on input fields
+   ============================================== */
+
+.form-group input.input-error {
+    border-color: var(--error);
+    box-shadow:   0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-group input.input-success {
+    border-color: var(--success);
+    box-shadow:   0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.field-error {
+    font-size: var(--font-size-xs);
+    color:     var(--error);
+    margin-top: 0.25rem;
+    display:   flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+
+/* ==============================================
+   AUTH DIVIDER
+   "or" separator between form and social login
+   (kept for extensibility)
+   ============================================== */
+
+.auth-divider {
+    display:     flex;
+    align-items: center;
+    gap:         0.75rem;
+    margin:      0.5rem 0;
+    color:       var(--text-muted);
+    font-size:   var(--font-size-xs);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content:          '';
+    flex:             1;
+    height:           1px;
+    background-color: var(--border-color);
+}
+
+
+/* ==============================================
+   MODAL SWITCH ANIMATION
+   Smooth fade when switching between
+   login and register modals
+   ============================================== */
+
+.modal-overlay {
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+
+/* ==============================================
+   SUCCESS STATE AFTER REGISTER
+   Brief success message before redirecting
+   ============================================== */
+
+.auth-success {
+    text-align:  center;
+    padding:     1.5rem 0;
+}
+
+.auth-success i {
+    font-size:     2.5rem;
+    color:         var(--success);
+    margin-bottom: 1rem;
+    display:       block;
+}
+
+.auth-success h3 {
+    font-size:     var(--font-size-lg);
+    margin-bottom: 0.5rem;
+}
+
+.auth-success p {
+    font-size: var(--font-size-sm);
+    color:     var(--text-secondary);
+}
+
+
+/* ==============================================
+   RESPONSIVE — AUTH MODALS
+   ============================================== */
+
+@media (max-width: 480px) {
+
+    .modal-title {
+        font-size: var(--font-size-lg);
+    }
+
+    .auth-form .btn-full {
+        font-size: var(--font-size-sm);
+    }
+}
